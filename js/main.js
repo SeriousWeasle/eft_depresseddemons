@@ -34,7 +34,6 @@ function renderPart(part_name, part_color, posx, posy, scale)
     rctx.globalCompositeOperation = "destination-in";
     //get the color in the shape of the part
     rctx.drawImage(document.getElementById(part_name), 0, 0);
-    dctx.drawImage(renderCanvas, posx, posy);
     //set to multiply for final pass
     rctx.globalCompositeOperation = "multiply";
     //multiply the part for shading
@@ -42,8 +41,19 @@ function renderPart(part_name, part_color, posx, posy, scale)
 
     //upscale part to 160 x 160 px
     let data = rctx.getImageData(0, 0, 32, 32).data;
+
+    for (n = 0; n < Math.floor(data.length / 4); n++)
+    {
+        let idx = n * 4;
+        let x = n % 32;
+        let y = Math.floor(n / 32);
+        let color = `rgba(${data[idx]}, ${data[idx + 1]}, ${data[idx + 2]}, ${data[idx + 3]})`;
+
+        uctx.fillStyle = color;
+        uctx.fillRect(x * scale, y * scale, scale, scale);
+    }
     console.log(data);
-    dctx.drawImage(upscaleCanvas, posx, posy);
+    dctx.drawImage(upscaleCanvas, posx * scale, posy * scale);
 }
 
 function HSLtoRGB(h, s, l)
@@ -123,15 +133,15 @@ function randomEyeColor()
 
 function sandbox()
 {
-    for (x = 0; x < (640 / 32); x++)
+    for (x = 0; x < (640 / 160); x++)
     {
-        for (y = 0; y < (640/32); y++)
+        for (y = 0; y < (640/160); y++)
         {
-            renderPart("dd_clothes", randomColor(), x * 32, y * 32, 2);
-            renderPart("dd_eyes", randomEyeColor(), x * 32, y * 32, 2);
-            renderPart("dd_hair", randomColor(), x * 32, y * 32, 2);
-            renderPart("dd_lips", randomColor(), x * 32, y * 32, 2);
-            renderPart("dd_skin", randomSkinColor(), x * 32, y * 32, 2);
+            renderPart("dd_clothes", randomColor(), x * 32, y * 32, 5);
+            renderPart("dd_eyes", randomEyeColor(), x * 32, y * 32, 5);
+            renderPart("dd_hair", randomColor(), x * 32, y * 32, 5);
+            renderPart("dd_lips", randomColor(), x * 32, y * 32, 5);
+            renderPart("dd_skin", randomSkinColor(), x * 32, y * 32, 5);
         }
     }
 }
