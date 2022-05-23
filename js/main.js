@@ -87,6 +87,29 @@ function randomColor()
     return `rgb(${r}, ${g}, ${b})`;
 }
 
+function randRange(vmin, vmax)
+{
+    return vmin + (Math.random() * (vmax - vmin));
+}
+
+function randomSkinColor()
+{
+    let h = randRange(0, 360);
+    let s = randRange(0.7, 1);
+    let l = randRange(0.7, 1);
+
+    let rgb = HSLtoRGB(h, s, l);
+
+    return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+}
+
+function randomEyeColor()
+{
+    let h = randRange(0, 360);
+    let s = randRange(0.8, 1);
+    let l = randRange(0.8, 1);
+}
+
 function sandbox()
 {
     for (x = 0; x < (640 / 32); x++)
@@ -94,10 +117,10 @@ function sandbox()
         for (y = 0; y < (640/32); y++)
         {
             renderPart("dd_clothes", randomColor(), x * 32, y * 32, 2);
-            renderPart("dd_eyes", randomColor(), x * 32, y * 32, 2);
+            renderPart("dd_eyes", randomEyeColor(), x * 32, y * 32, 2);
             renderPart("dd_hair", randomColor(), x * 32, y * 32, 2);
             renderPart("dd_lips", randomColor(), x * 32, y * 32, 2);
-            renderPart("dd_skin", randomColor(), x * 32, y * 32, 2);
+            renderPart("dd_skin", randomSkinColor(), x * 32, y * 32, 2);
         }
     }
 }
