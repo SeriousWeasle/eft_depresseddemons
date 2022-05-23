@@ -4,6 +4,9 @@ var dctx;
 var renderCanvas;
 var rctx;
 
+var upscaleCanvas;
+var uctx;
+
 function getCanvasCtx()
 {
     //render canvas for coloring parts
@@ -13,6 +16,10 @@ function getCanvasCtx()
     //get the regular draw canvas
     drawCanvas = document.getElementById("drawField");
     dctx = drawCanvas.getContext('2d');
+
+    //get the upscaler canvas
+    upscaleCanvas = document.getElementById("partUpscaler");
+    uctx = upscaleCanvas.getContext('2d');
 }
 
 function renderPart(part_name, part_color, posx, posy, scale)
@@ -32,7 +39,11 @@ function renderPart(part_name, part_color, posx, posy, scale)
     rctx.globalCompositeOperation = "multiply";
     //multiply the part for shading
     rctx.drawImage(document.getElementById(part_name), 0, 0);
-    dctx.drawImage(renderCanvas, posx, posy);
+
+    //upscale part to 160 x 160 px
+    let data = rctx.getImageData(0, 0, 32, 32).data;
+    console.log(data);
+    dctx.drawImage(upscaleCanvas, posx, posy);
 }
 
 function HSLtoRGB(h, s, l)
