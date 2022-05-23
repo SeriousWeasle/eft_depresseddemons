@@ -24,6 +24,7 @@ function getCanvasCtx()
 
 function renderPart(part_name, part_color, posx, posy, scale)
 {
+    uctx.clearRect(0, 0, 160, 160);
     //set to draw overlap
     rctx.globalCompositeOperation = "source-over";
 
@@ -42,6 +43,7 @@ function renderPart(part_name, part_color, posx, posy, scale)
     //upscale part to 160 x 160 px
     let data = rctx.getImageData(0, 0, 32, 32).data;
 
+    //go over all pixels and scale them up
     for (n = 0; n < Math.floor(data.length / 4); n++)
     {
         let idx = n * 4;
@@ -52,7 +54,8 @@ function renderPart(part_name, part_color, posx, posy, scale)
         uctx.fillStyle = color;
         uctx.fillRect(x * scale, y * scale, scale, scale);
     }
-    console.log(data);
+
+    //draw upscaled image to canvas
     dctx.drawImage(upscaleCanvas, posx * scale, posy * scale);
 }
 
@@ -129,6 +132,10 @@ function randomEyeColor()
     let h = randRange(0, 360);
     let s = randRange(0.8, 1);
     let l = randRange(0.8, 1);
+
+    let rgb = HSLtoRGB(h, s, l);
+
+    return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 }
 
 function sandbox()
@@ -142,6 +149,10 @@ function sandbox()
             renderPart("dd_hair", randomColor(), x * 32, y * 32, 5);
             renderPart("dd_lips", randomColor(), x * 32, y * 32, 5);
             renderPart("dd_skin", randomSkinColor(), x * 32, y * 32, 5);
+            if (Math.random() < 0.5) //50% of characters have a hat
+            {
+                renderPart("dd_witchhat", randomColor(), x * 32, y * 32, 5);
+            }
         }
     }
 }
