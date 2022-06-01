@@ -7,6 +7,19 @@ var rctx;
 var upscaleCanvas;
 var uctx;
 
+const parts = {
+    "base": {
+        "skin": "dd_skin",
+        "hair": "dd_hair",
+        "clothes": "dd_clothes",
+        "eyes": "dd_eyes",
+        "lips": "dd_lips"
+    },
+    "hats": {
+        "witchhat": "dd_witchhat"
+    }
+};
+
 function getCanvasCtx()
 {
     //render canvas for coloring parts
@@ -144,14 +157,14 @@ function sandbox()
     {
         for (y = 0; y < (640/160); y++)
         {
-            renderPart("dd_clothes", randomColor(), x * 32, y * 32, 5);
-            renderPart("dd_eyes", randomEyeColor(), x * 32, y * 32, 5);
-            renderPart("dd_hair", randomColor(), x * 32, y * 32, 5);
-            renderPart("dd_lips", randomColor(), x * 32, y * 32, 5);
-            renderPart("dd_skin", randomSkinColor(), x * 32, y * 32, 5);
+            renderPart(parts.base.clothes, randomColor(), x * 32, y * 32, 5);
+            renderPart(parts.base.eyes, randomEyeColor(), x * 32, y * 32, 5);
+            renderPart(parts.base.hair, randomColor(), x * 32, y * 32, 5);
+            renderPart(parts.base.lips, randomColor(), x * 32, y * 32, 5);
+            renderPart(parts.base.skin, randomSkinColor(), x * 32, y * 32, 5);
             if (Math.random() < 0.5) //50% of characters have a hat
             {
-                renderPart("dd_witchhat", randomColor(), x * 32, y * 32, 5);
+                renderPart(parts.hats.witchhat, randomColor(), x * 32, y * 32, 5);
             }
         }
     }
